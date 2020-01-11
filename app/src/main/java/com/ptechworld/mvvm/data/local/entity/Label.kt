@@ -11,7 +11,8 @@ data class Label(
     @PrimaryKey
     @SerializedName("id")
     @Expose
-    var id: Int? = null,
+    override var id: Int = 0,
+    override var numberOfChidren: Int = 0,
     @SerializedName("node_id")
     @Expose
     var nodeId: String? = null,
@@ -31,4 +32,4 @@ data class Label(
     @Expose
     var description: Any? = null
 
-)
+) : BaseModel()
