@@ -5,8 +5,9 @@ import com.ptechworld.mvvm.data.local.Dao.RepoDao
 import com.ptechworld.mvvm.data.local.entity.*
 import com.ptechworld.mvvm.data.remote.service.RepoApiService
 import io.reactivex.Single
+import javax.inject.Inject
 
-class RepoRepository constructor(
+class RepoRepository @Inject constructor(
     val repoDao: RepoDao,
     val repoApiService: RepoApiService
 ) : BaseRepository<RepoWithIssues, Repo, List<Issue>>(repoDao, repoApiService) {

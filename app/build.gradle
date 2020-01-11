@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     dataBinding {
@@ -17,12 +19,21 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments << ["dagger.gradle.incremental": "true"]
+            }
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -37,6 +48,9 @@ dependencies {
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "com.google.dagger:dagger-android:${rootProject.dagger2Version}"
+    kapt "com.google.dagger:dagger-compiler:${rootProject.dagger2Version}"
+    kapt "com.google.dagger:dagger-android-processor:${rootProject.dagger2Version}"
     implementation "com.squareup.retrofit2:retrofit:${rootProject.retrofitVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${rootProject.gsonConverterVersion}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${rootProject.rxJavaAdapterVersion}"
