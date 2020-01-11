@@ -9,8 +9,9 @@ import com.ptechworld.mvvm.data.remote.RawText
 import com.ptechworld.mvvm.data.remote.service.IssueApiService
 import io.reactivex.Observable
 import io.reactivex.Single
+import javax.inject.Inject
 
-class IssueRepository constructor(
+class IssueRepository @Inject constructor(
     val issueDao: IssueDao,
     val issueApiService: IssueApiService
 ) : BaseRepository<IssueWithComments, Issue, List<Comment>>(issueDao, issueApiService){
