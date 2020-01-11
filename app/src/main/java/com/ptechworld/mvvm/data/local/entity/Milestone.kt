@@ -12,7 +12,8 @@ data class Milestone(
     @PrimaryKey
     @SerializedName("id")
     @Expose
-    var id: Int? = null,
+    override var id: Int = 0,
+    override var numberOfChidren: Int = 0,
     @SerializedName("url")
     @Expose
     var url: String? = null,
@@ -60,4 +61,4 @@ data class Milestone(
     @Expose
     var closedAt: String? = null
 
-)
+) : BaseModel()

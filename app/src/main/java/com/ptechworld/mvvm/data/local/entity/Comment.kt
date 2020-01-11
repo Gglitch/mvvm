@@ -6,13 +6,15 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 @Entity
 data class Comment(
     @PrimaryKey
     @SerializedName("id")
     @Expose
-    var id: Int? = null,
+    override var id: Int = 0,
+    override var numberOfChidren: Int = 0,
     @SerializedName("url")
     @Expose
     var url: String? = null,
@@ -31,15 +33,21 @@ data class Comment(
     var user: User? = null,
     @SerializedName("created_at")
     @Expose
-    var createdAt: String? = null,
+    var createdAt: Date? = null,
     @SerializedName("updated_at")
     @Expose
-    var updatedAt: String? = null,
+    var updatedAt: Date? = null,
     @SerializedName("author_association")
     @Expose
     var authorAssociation: String? = null,
     @SerializedName("body")
     @Expose
-    var body: String? = null
+    var body: String? = null,
+    var isMarkDown: Boolean = false
 
-)
+) : BaseModel() {
+    fun markDown(text: String) {
+        body = text
+        isMarkDown = true
+    }
+}
