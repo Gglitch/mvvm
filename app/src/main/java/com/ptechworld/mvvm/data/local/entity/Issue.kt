@@ -2,6 +2,7 @@ package com.ptechworld.mvvm.data.local.entity
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 
@@ -41,11 +42,11 @@ data class Issue(
     @SerializedName("title")
     @Expose
     var title: String? = null,
-    @Embedded
+    @Embedded(prefix = "user_")
     @SerializedName("user")
     @Expose
     var user: User? = null,
-    @Embedded
+    @Ignore
     @SerializedName("labels")
     @Expose
     var labels: List<Label>? = null,
@@ -59,11 +60,11 @@ data class Issue(
     @SerializedName("assignee")
     @Expose
     var assignee: User? = null,
-    @Embedded(prefix = "assignees_")
+    @Ignore
     @SerializedName("assignees")
     @Expose
     var assignees: List<User>? = null,
-    @Embedded
+    @Embedded(prefix = "milestone_")
     @SerializedName("milestone")
     @Expose
     var milestone: Milestone? = null,
@@ -82,7 +83,7 @@ data class Issue(
     @SerializedName("author_association")
     @Expose
     var authorAssociation: String? = null,
-    @Embedded
+    @Embedded(prefix = "pr_")
     @SerializedName("pull_request")
     @Expose
     var pullRequest: PullRequest? = null,

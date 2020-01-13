@@ -13,5 +13,5 @@ data class Repo(
     @Expose
     override var id: Int = 0,
     override var numberOfChidren: Int = 0,
-    var url: String = BASE_URL
+    var url: String = BASE_URL.removeSuffix("/")
 ): BaseModel()

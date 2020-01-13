@@ -11,7 +11,7 @@ data class PullRequest(
     @PrimaryKey
     @SerializedName("url")
     @Expose
-    var url: String? = null,
+    var url: String = "",
     @SerializedName("html_url")
     @Expose
     var htmlUrl: String? = null,

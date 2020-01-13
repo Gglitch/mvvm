@@ -1,19 +1,23 @@
 package com.ptechworld.mvvm.data.local.Dao
 
 import androidx.room.*
+import com.ptechworld.mvvm.data.local.entity.Issue
 import com.ptechworld.mvvm.data.local.entity.IssueWithComments
+import com.ptechworld.mvvm.data.local.entity.Repo
 import com.ptechworld.mvvm.data.local.entity.RepoWithIssues
+import io.reactivex.Completable
 import io.reactivex.Single
 
 @Dao
-interface RepoDao : BaseDao<RepoWithIssues> {
+interface RepoDao {
     @Transaction
-    @Query("SELECT * from repo WHERE id = :id")
-    override fun get(id: Int): Single<RepoWithIssues>
+    @Query("SELECT * from Repo WHERE id = :id")
+    fun get(id: Int): Single<RepoWithIssues>
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    override fun save(data: RepoWithIssues): Single<Int>
+    fun save(data: Repo, list: List<Issue>)
 
     @Delete
-    override fun clear(data: RepoWithIssues): Single<Int>
+    fun clear(data: Repo, list: List<Issue>): Single<Void>
 }
