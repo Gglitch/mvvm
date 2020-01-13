@@ -5,7 +5,7 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Headers
 
-interface RepoApiService : BaseService<List<Issue>> {
+interface RepoApiService {
 
     /**
      * Get all github issue
@@ -17,5 +17,5 @@ interface RepoApiService : BaseService<List<Issue>> {
         "User-Agent: Android-MVVM"
     )
     @GET("issues?filter=all&state=all")
-    override fun get(id: Int): Single<List<Issue>>
+    fun get(): Single<List<Issue>>
 }

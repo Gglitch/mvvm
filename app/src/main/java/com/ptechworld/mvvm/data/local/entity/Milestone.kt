@@ -35,7 +35,7 @@ data class Milestone(
     @SerializedName("description")
     @Expose
     var description: String? = null,
-    @Embedded
+    @Embedded(prefix = "creator_")
     @SerializedName("creator")
     @Expose
     var creator: User? = null,

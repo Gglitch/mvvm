@@ -4,7 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 data class RepoWithIssues(
-    @Embedded override val data: Repo,
+    @Embedded(prefix = "") override val data: Repo,
     @Relation(
         parentColumn = "url",
         entityColumn = "repositoryUrl"

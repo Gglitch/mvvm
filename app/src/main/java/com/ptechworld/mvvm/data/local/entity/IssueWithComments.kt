@@ -7,7 +7,7 @@ data class  IssueWithComments(
     @Embedded override val data: Issue,
     @Relation(
         parentColumn = "url",
-        entityColumn = "issue_url"
+        entityColumn = "issueUrl"
     )
     override val children: List<Comment>
 ) : BaseDataWithChildren<Issue, List<Comment>>()

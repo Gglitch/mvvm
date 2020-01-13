@@ -30,6 +30,6 @@ data class Label(
     var default: Boolean? = null,
     @SerializedName("description")
     @Expose
-    var description: Any? = null
+    var description: String? = null
 
 ) : BaseModel()

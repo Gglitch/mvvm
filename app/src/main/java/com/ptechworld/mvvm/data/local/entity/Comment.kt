@@ -27,7 +27,7 @@ data class Comment(
     @SerializedName("node_id")
     @Expose
     var nodeId: String? = null,
-    @Embedded
+    @Embedded(prefix = "user_")
     @SerializedName("user")
     @Expose
     var user: User? = null,

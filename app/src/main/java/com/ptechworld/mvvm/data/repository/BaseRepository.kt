@@ -1,14 +1,14 @@
 package com.ptechworld.mvvm.data.repository
 
-import com.ptechworld.mvvm.data.local.Dao.BaseDao
+import androidx.room.EmptyResultSetException
 import com.ptechworld.mvvm.data.local.entity.BaseDataWithChildren
 import com.ptechworld.mvvm.data.local.entity.BaseModel
-import com.ptechworld.mvvm.data.remote.service.BaseService
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import kotlin.NullPointerException
 
-abstract class BaseRepository<T : BaseDataWithChildren<S, R>, S : BaseModel, R : List<BaseModel>> (val baseDao: BaseDao<T>, val baseService: BaseService<R>) {
+abstract class BaseRepository<T : BaseDataWithChildren<S, R>, S : BaseModel, R : List<BaseModel>> {
 
     lateinit var data: S
 
@@ -18,7 +18,7 @@ abstract class BaseRepository<T : BaseDataWithChildren<S, R>, S : BaseModel, R :
      * @return Single T
      */
     open fun get(): Single<T> {
-        return baseDao.get(data.id)
+        return getLocal(data.id)
             .flatMap(this::check)
             .retryWhen{errors -> errors.flatMap(this::parseErrors)}
     }
@@ -30,8 +30,8 @@ abstract class BaseRepository<T : BaseDataWithChildren<S, R>, S : BaseModel, R :
      */
     private fun check(response: T): Single<T> {
         if (!response.data.isUpdateIn24hours || response.data.numberOfChidren != response.children.size) {
-            return baseDao.clear(response)
-                .flatMap { Single.error<T>(NullPointerException()) }
+            return clearLocal(data, response.children)
+                .flatMap { Single.error<T>(EmptyResultSetException("Either not updated in 24 hours or Children are not same")) }
         }
         return Single.just(response)
     }
@@ -41,8 +41,8 @@ abstract class BaseRepository<T : BaseDataWithChildren<S, R>, S : BaseModel, R :
      *
      * @return Single T
      */
-    private fun parseErrors(e: Throwable): Flowable<Int> {
-        if (e is NullPointerException){
+    private fun parseErrors(e: Throwable): Flowable<Void> {
+        if (e is EmptyResultSetException){
             return getRemoteData().toFlowable()
         }
         throw e
@@ -53,16 +53,15 @@ abstract class BaseRepository<T : BaseDataWithChildren<S, R>, S : BaseModel, R :
      *
      * @return Single T
      */
-    private fun getRemoteData(): Single<Int> {
-        return baseService.get(data.id)
-            .flatMap{ response -> baseDao.save(create(response))}
+    private fun getRemoteData(): Single<Void> {
+        return getRemote(data.id)
+            .flatMap{ response -> Single.create<Void> {
+                saveLocal(data, response)
+            }}
     }
 
-    /**
-     *  Create The T object from data and list to save into the local DB
-     *
-     *  @param list list of Entityin from of R
-     *  @return Instance of BaseDataWithList object
-     */
-    protected abstract fun create(list: R): T
+    protected abstract fun getRemote(id: Int): Single<R>
+    protected abstract fun getLocal(id: Int): Single<T>
+    protected abstract fun saveLocal(data: S, list: R)
+    protected abstract fun clearLocal(data: S, list: R): Single<Void>
 }
