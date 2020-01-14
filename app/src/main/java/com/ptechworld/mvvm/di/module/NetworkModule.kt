@@ -11,10 +11,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-class NetworkModule(val baseURL: String){
+class NetworkModule{
 
     @Provides
-    fun providesRetrofit(): Retrofit {
+    fun providesRetrofit(baseURL: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseURL)
             .addConverterFactory(GsonConverterFactory.create())
