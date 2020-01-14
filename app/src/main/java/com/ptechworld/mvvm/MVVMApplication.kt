@@ -25,32 +25,14 @@ class MVVMApplication : Application(), HasAndroidInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
-    private var repo: RepoRepository? = null
     override fun onCreate() {
         super.onCreate()
 
-        val db = AppDatabase.build(this)
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
+        DaggerAppComponent.builder()
+            .application(this)
+            .baseURL(BASE_URL)
             .build()
-        repo = RepoRepository(db.repoDao(), retrofit.create(RepoApiService::class.java))
-
-        val obser = object : DisposableSingleObserver<RepoWithIssues>() {
-
-            override fun onSuccess(t: RepoWithIssues) {
-                Log.d("MVVMApplication", t.toString())
-            }
-
-            override fun onError(e: Throwable) {
-                Log.d("MVVMApplication", e.toString())
-            }
-        }
-        repo!!.get().subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-//            .debounce(400, TimeUnit.MILLISECONDS)
-            .subscribe(obser)
+            .inject(this)
 
     }
 

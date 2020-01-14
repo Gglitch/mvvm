@@ -1,6 +1,7 @@
 package com.ptechworld.mvvm.di.module
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import com.ptechworld.mvvm.data.local.AppDatabase
@@ -12,15 +13,11 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class AppModule(val app: Application){
+class AppModule{
 
     @Provides
     @Singleton
-    fun provideApplication(): Application = app
-
-    @Provides
-    @Singleton
-    fun provideAppDatabase(app: Application): AppDatabase = AppDatabase.build(app)
+    fun provideAppDatabase(context: Context): AppDatabase = AppDatabase.build(context)
 
     @Provides
     @Singleton
