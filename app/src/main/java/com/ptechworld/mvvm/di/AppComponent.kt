@@ -5,6 +5,7 @@ import android.content.Context
 import com.ptechworld.mvvm.MVVMApplication
 import com.ptechworld.mvvm.di.module.AppModule
 import com.ptechworld.mvvm.di.module.NetworkModule
+import com.ptechworld.mvvm.di.module.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = arrayOf(AndroidSupportInjectionModule::class, BuildersModule::class, AppModule::class, NetworkModule::class)
+    modules = arrayOf(AndroidSupportInjectionModule::class, BuildersModule::class, AppModule::class, NetworkModule::class, ViewModelModule::class)
 )
 interface AppComponent: AndroidInjector<MVVMApplication> {
 

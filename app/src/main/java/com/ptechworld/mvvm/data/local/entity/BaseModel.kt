@@ -1,6 +1,6 @@
 package com.ptechworld.mvvm.data.local.entity
 
-abstract class BaseModel() {
+abstract class BaseModel {
 
     abstract var id: Int
     abstract var numberOfChidren: Int
