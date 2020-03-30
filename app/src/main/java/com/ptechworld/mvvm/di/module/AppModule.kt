@@ -10,6 +10,7 @@ import com.ptechworld.mvvm.data.local.Dao.RepoDao
 import com.ptechworld.mvvm.utility.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Singleton
 
 @Module
@@ -26,5 +27,8 @@ class AppModule{
     @Provides
     @Singleton
     fun provideIssueDao(database: AppDatabase): IssueDao = database.issueDao()
+
+    @Provides
+    fun provideDisposable(): CompositeDisposable = CompositeDisposable()
 
 }
